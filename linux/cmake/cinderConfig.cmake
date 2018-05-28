@@ -1,0 +1,1 @@
+/home/averrin/projects/Cinder/lib/linux/x86_64/ogl/Debug/cinderConfig.cmake

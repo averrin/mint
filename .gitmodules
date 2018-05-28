@@ -1,0 +1,3 @@
+[submodule "include/Cinder-Pango"]
+	path = include/Cinder-Pango
+	url = git@github.com:kitschpatrol/Cinder-Pango.git
