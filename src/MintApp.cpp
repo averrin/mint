@@ -28,19 +28,14 @@ void MintApp::setup() {
 }
 
 void MintApp::mouseDown(MouseEvent event) {
-	mPango->setMaxSize(event.getPos());
+	// mPango->setMaxSize(event.getPos());
 }
 
 void MintApp::keyDown(KeyEvent event) {
 
 	switch (event.getCode()) {
-		case KeyEvent::KEY_a:
-			// Toggle Anti-Aliasing
-			if (mPango->getTextAntialias() == kp::pango::TextAntialias::NONE) {
-				mPango->setTextAntialias(kp::pango::TextAntialias::DEFAULT);
-			} else {
-				mPango->setTextAntialias(kp::pango::TextAntialias::NONE);
-			}
+		case KeyEvent::KEY_ESCAPE:
+            exit(0);
 			break;
 		case KeyEvent::KEY_UP:
 			mPango->setSpacing(mPango->getSpacing() + 1.0);
@@ -51,32 +46,6 @@ void MintApp::keyDown(KeyEvent event) {
 		case KeyEvent::KEY_i:
 			mPango->setDefaultTextItalicsEnabled(!mPango->getDefaultTextItalicsEnabled());
 			break;
-		case KeyEvent::KEY_d:
-			mPango = nullptr;
-			break;
-		case KeyEvent::KEY_c:
-			mPango = kp::pango::CinderPango::create();
-			mPango->setMaxSize(getWindowWidth(), getWindowHeight());
-			break;
-		case KeyEvent::KEY_b:
-			if (mPango->getBackgroundColor() == ci::ColorA::zero()) {
-				mPango->setBackgroundColor(ci::ColorA(ci::CM_HSV, ci::Rand::randFloat(), 0.5f, 1.0f, 1.0f));
-			} else {
-				// Go clear
-				mPango->setBackgroundColor(ci::ColorA::zero());
-			}
-			break;
-		case KeyEvent::KEY_r:
-			if (kp::pango::CinderPango::getTextRenderer() == kp::pango::TextRenderer::FREETYPE) {
-				kp::pango::CinderPango::setTextRenderer(kp::pango::TextRenderer::PLATFORM_NATIVE);
-			} else {
-				kp::pango::CinderPango::setTextRenderer(kp::pango::TextRenderer::FREETYPE);
-			}
-
-			// rebuild
-			mPango = kp::pango::CinderPango::create();
-			mPango->setMaxSize(getWindowWidth(), getWindowHeight());
-			break;
 		default:
 			break;
 	}
@@ -86,25 +55,20 @@ void MintApp::update() {
 	if (mPango != nullptr) {
 
 		mPango->setText(
-				"<b>Bold Text</b> "
-				"<span foreground=\"green\" font=\"24.0\">Green téxt</span> "
-				"<span foreground=\"red\" font=\"Times 48.0\">Red text</span> "
-				"<span foreground=\"blue\" font=\"Gravur Condensed Pro 72.0\">AVAVAVA Blue text</span> "
-				"<i>Italic Text</i> "
-				"hovedgruppen fra <i>forskjellige</i> destinasjoner. Tilknytningsbillett er gyldig inntil 24 timer f√∏r avreise hovedgruppe.\n\nUnicef said 3m "
-				"people had been affected and more than <span font=\"33.0\">1,400</span> had been killed. <b>The government</b> said some 27,000 people remained "
-				"trapped "
-				"and awaiting help. " +
-				std::to_string(getElapsedFrames()));
+				"sample text for <span foreground='#3EB489'><b>mint</b></span><br>"
+				"[<span underline='single'>link</span>] [<b>a</b>]"
+        );
 
 		// Only renders if it needs to
+        mPango->setDefaultTextColor(Color(0.9, 0.9, 0.9));
+        mPango->setDefaultTextFont("Iosevka 14");
 		mPango->render();
 	}
 }
 
 void MintApp::draw() {
-	float bgColor = (0.5 + 0.5 * sin(0.5 * getElapsedSeconds()));
-	gl::clear(Color(bgColor, bgColor, bgColor));
+	// float bgColor = (0.5 + 0.5 * sin(0.5 * getElapsedSeconds()));
+	gl::clear(Color(0.1, 0.1, 0.1));
 	gl::enableAlphaBlendingPremult();
 
 	if (mPango != nullptr) {
