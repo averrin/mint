@@ -13,6 +13,8 @@ using namespace std;
 
 int HOffset = 4;
 int VOffset = 4;
+// std::string DEFAULT_FONT = "Iosevka 14";
+std::string DEFAULT_FONT = "FiraCode 12";
 
 class MintApp : public App {
 public:
@@ -68,15 +70,14 @@ void MintApp::update() {
         );
 
 		// Only renders if it needs to
-        mPango->setDefaultTextColor(Color(0.9, 0.9, 0.9));
-        mPango->setDefaultTextFont("Iosevka 14");
+        mPango->setDefaultTextColor(Color(steps->state->currentPalette.fgColor));
+        mPango->setDefaultTextFont(DEFAULT_FONT);
 		mPango->render();
 	}
 }
 
 void MintApp::draw() {
-	// float bgColor = (0.5 + 0.5 * sin(0.5 * getElapsedSeconds()));
-	gl::clear(Color(0.1, 0.1, 0.1));
+	gl::clear(Color(steps->state->currentPalette.bgColor));
 	gl::enableAlphaBlendingPremult();
 
 	if (mPango != nullptr) {

@@ -10,7 +10,7 @@
 namespace sml = boost::sml;
 
 struct events {
-  auto operator()() const /*noexcept*/ {
+  auto operator()() const noexcept {
     using namespace sml;
     // auto guard = [](const SetTextEvent& e) { return e.text; };
     auto set_text = [] (std::shared_ptr<State> state, const SetTextEvent& e) {
