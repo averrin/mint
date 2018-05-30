@@ -4,10 +4,15 @@
 #include "cinder/gl/gl.h"
 
 #include "CinderPango.h"
+#include "mint/steps.hpp"
+#include "mint/state.hpp"
 
 using namespace ci;
 using namespace ci::app;
 using namespace std;
+
+int HOffset = 4;
+int VOffset = 4;
 
 class MintApp : public App {
 public:
@@ -18,6 +23,7 @@ public:
 	void draw() override;
 
 	kp::pango::CinderPangoRef mPango;
+    std::shared_ptr<Steps> steps;
 };
 
 void MintApp::setup() {
@@ -25,6 +31,9 @@ void MintApp::setup() {
 	mPango = kp::pango::CinderPango::create();
 	mPango->setMinSize(100, 100);
 	mPango->setMaxSize(getWindowWidth(), getWindowHeight());
+
+    steps = std::make_shared<Steps>();
+    steps->start();
 }
 
 void MintApp::mouseDown(MouseEvent event) {
@@ -55,8 +64,7 @@ void MintApp::update() {
 	if (mPango != nullptr) {
 
 		mPango->setText(
-				"sample text for <span foreground='#3EB489'><b>mint</b></span><br>"
-				"[<span underline='single'>link</span>] [<b>a</b>]"
+            steps->state->text
         );
 
 		// Only renders if it needs to
@@ -72,7 +80,7 @@ void MintApp::draw() {
 	gl::enableAlphaBlendingPremult();
 
 	if (mPango != nullptr) {
-		gl::draw(mPango->getTexture());
+		gl::draw(mPango->getTexture(), vec2(HOffset, VOffset));
 	}
 }
 

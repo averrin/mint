@@ -1,3 +1,9 @@
 [submodule "include/Cinder-Pango"]
 	path = include/Cinder-Pango
 	url = git@github.com:kitschpatrol/Cinder-Pango.git
+[submodule "include/sml"]
+	path = include/sml
+	url = git@github.com:boost-experimental/sml.git
+[submodule "linux/backward-cpp"]
+	path = linux/backward-cpp
+	url = git@github.com:bombela/backward-cpp.git

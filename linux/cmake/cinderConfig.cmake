@@ -1,1 +1,1 @@
-/home/averrin/projects/Cinder/lib/linux/x86_64/ogl/Debug/cinderConfig.cmake
+/home/alexey.nabrodov@team.wrike.com/projects/Cinder/lib/linux/x86_64/ogl/Debug/cinderConfig.cmake
