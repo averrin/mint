@@ -11,17 +11,6 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 
-auto darkPalette = Palette{
-    "dark",
-    ci::Color(0xcc/255.f, 0xcc/255.f, 0xcc/255.f),
-    ci::Color(0x2e/255.f, 0x2e/255.f, 0x2e/255.f)};
-
-auto lightPalette = Palette{
-    "light",
-    ci::Color(0x11/255.f, 0x11/255.f, 0x11/255.f),
-    ci::Color(0xcc/255.f, 0xcc/255.f, 0xcc/255.f)};
-
-
 int HOffset = 24;
 int VOffset = 24;
 // std::string DEFAULT_FONT = "Iosevka 14";
@@ -46,7 +35,7 @@ void MintApp::setup() {
 	mPango->setMaxSize(getWindowWidth(), getWindowHeight());
 
     steps = std::make_shared<Steps>();
-    steps->state->currentPalette = darkPalette;
+    steps->state->currentPalette = palettes::DARK;
     steps->start();
 }
 
@@ -67,8 +56,8 @@ void MintApp::keyDown(KeyEvent event) {
 			mPango->setSpacing(mPango->getSpacing() - 1.0);
 			break;
 		case KeyEvent::KEY_t:
-            steps->state->currentPalette = steps->state->currentPalette.name == darkPalette.name ?
-                lightPalette : darkPalette;
+            steps->state->currentPalette = steps->state->currentPalette.name == palettes::DARK.name ?
+                palettes::LIGHT : palettes::DARK;
 			break;
 		case KeyEvent::KEY_i:
 			mPango->setDefaultTextItalicsEnabled(!mPango->getDefaultTextItalicsEnabled());
