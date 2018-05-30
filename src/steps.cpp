@@ -7,15 +7,9 @@
 #include <boost/sml.hpp>
 namespace sml = boost::sml;
 
-Steps::Steps() {
-    auto darkPalette = Palette{
-        ci::Color(0xcc/255.f, 0xcc/255.f, 0xcc/255.f),
-        ci::Color(0x11/255.f, 0x11/255.f, 0x11/255.f)};
 
-    auto lightPalette = Palette{
-        ci::Color(0x11/255.f, 0x11/255.f, 0x11/255.f),
-        ci::Color(0xcc/255.f, 0xcc/255.f, 0xcc/255.f)};
-    state->currentPalette = darkPalette;
+
+Steps::Steps() {
 };
 
 void Steps::start() {
@@ -30,6 +24,5 @@ void Steps::start() {
 
     state_machine.process_event(SetTextEvent{greeting});
 }
-
 
 
