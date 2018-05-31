@@ -34,6 +34,7 @@ set( SRC_FILES
     ${BACKWARD_ENABLE}
 
 	${SRC_DIR}/palette.cpp
+	${SRC_DIR}/state.cpp
 	${SRC_DIR}/steps.cpp
 
 	${SRC_DIR}/MintApp.cpp

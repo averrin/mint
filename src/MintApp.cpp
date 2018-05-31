@@ -1,3 +1,7 @@
+#include <regex>
+#include <string>
+#include <iostream>
+
 #include "cinder/Rand.h"
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
@@ -45,6 +49,8 @@ void MintApp::mouseDown(MouseEvent event) {
 
 void MintApp::keyDown(KeyEvent event) {
 
+    steps->processKey(event);
+
 	switch (event.getCode()) {
 		case KeyEvent::KEY_ESCAPE:
             exit(0);
@@ -71,7 +77,8 @@ void MintApp::update() {
 	if (mPango != nullptr) {
 
 		mPango->setText(
-            steps->state->text
+            //TODO: templating
+            std::regex_replace(steps->state->text, std::regex("%green%"), steps->state->currentPalette.green)
         );
 
 		// Only renders if it needs to

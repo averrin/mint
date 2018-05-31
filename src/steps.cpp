@@ -3,6 +3,10 @@
 #include "mint/palette.hpp"
 
 #include "cinder/gl/gl.h"
+#include "cinder/app/App.h"
+
+using namespace ci;
+using namespace ci::app;
 
 #include <boost/sml.hpp>
 namespace sml = boost::sml;
@@ -13,16 +17,9 @@ Steps::Steps() {
 };
 
 void Steps::start() {
-
-    std::string greeting = 
-        "I love <tt>text</tt>. Really.<br>"
-        "But most of modern software tends to decrease text importance. "
-        "They use a lot of colorful images and 'sexy' ui controls. Bleh.<br>"
-        "So I create Mint. <b>M</b>int <b>I</b>s <b>N</b>ot <b>T</b>erminal. Because who needs terminal which cannot run Emacs?<br>"
-        "Mint is bunch of text-based ui experiments. Mint is about text, keyboard and some oldschool habits."
-    ;
-
-    state_machine.process_event(SetTextEvent{greeting});
+    state_machine.process_event(SetTextEvent{State::greeting});
 }
 
-
+void Steps::processKey(KeyEvent event) {
+    state_machine.process_event(KeyPressedEvent{event});
+}
