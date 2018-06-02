@@ -18,7 +18,8 @@ namespace sml = boost::sml;
 struct events {
     auto operator()() const noexcept {
         using namespace sml;
-        auto is_enter = [](KeyPressedEvent e) { return e.key.getCode() == KeyEvent::KEY_RETURN; };
+        auto is_enter = [](KeyPressedEvent e) {
+            return e.key.getCode() == KeyEvent::KEY_RETURN || (e.key.getCode() == KeyEvent::KEY_j && e.key.isControlDown()); };
         auto set_text = [] (std::shared_ptr<State> state, const SetContentEvent& e) {
             state->fragments = e.content;
         };

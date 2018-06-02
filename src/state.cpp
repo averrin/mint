@@ -35,7 +35,7 @@ const Fragments State::greeting = {{
     " <span color='{{green}}' weight='bold'>T</span>erminal."
     " Because who needs terminal which cannot run Emacs?<br>"
     "Mint is bunch of text-based ui experiments. Mint is about text, keyboard and some oldschool habits. <br>" 
-    "Press <b>Enter</b>…<br>"s}}
+    "Press <b>Enter</b> (or <b>Ctrl+J</b>, of course)…<br>"s}}
 ;
 
 const Fragments State::step_one = {
