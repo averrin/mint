@@ -14,20 +14,21 @@ using namespace ci::app;
 #include <boost/sml.hpp>
 namespace sml = boost::sml;
 
+
 struct events {
     auto operator()() const noexcept {
         using namespace sml;
         auto is_enter = [](KeyPressedEvent e) { return e.key.getCode() == KeyEvent::KEY_RETURN; };
-        auto set_text = [] (std::shared_ptr<State> state, const SetTextEvent& e) {
-            state->text = e.text;
+        auto set_text = [] (std::shared_ptr<State> state, const SetContentEvent& e) {
+            state->fragments = e.content;
         };
         auto step_one = [] (std::shared_ptr<State> state, const KeyPressedEvent& e) {
-            state->text += State::step_one;
+            state->fragments.insert(state->fragments.end(), State::step_one.begin(), State::step_one.end());
         };
 
         // clang-format off
         return make_transition_table(
-            *"init"_s + event<SetTextEvent> / set_text  = "started"_s
+            *"init"_s + event<SetContentEvent> / set_text  = "started"_s
             , "started"_s + event<KeyPressedEvent> [is_enter] / step_one  = "step_one"_s
         );
         // clang-format on

@@ -1,5 +1,6 @@
 # PangoBasic
 cmake_minimum_required( VERSION 2.8 FATAL_ERROR )
+set(CMAKE_CXX_STANDARD 17)
 # set( CMAKE_VERBOSE_MAKEFILE on )
 
 get_filename_component( CINDER_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../Cinder" ABSOLUTE )
@@ -36,6 +37,8 @@ set( SRC_FILES
     ${JNJ_DIR}
     "${CMAKE_CURRENT_SOURCE_DIR}/../include/Jinja2CppLight/src/stringhelper.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/../include/Jinja2CppLight/src/Jinja2CppLight.cpp"
+
+	${SRC_DIR}/fragment.cpp
 	${SRC_DIR}/palette.cpp
 	${SRC_DIR}/state.cpp
 	${SRC_DIR}/steps.cpp

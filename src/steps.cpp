@@ -17,7 +17,7 @@ Steps::Steps() {
 };
 
 void Steps::start() {
-    state_machine.process_event(SetTextEvent{State::greeting});
+    state_machine.process_event(SetContentEvent{State::greeting});
 }
 
 void Steps::processKey(KeyEvent event) {

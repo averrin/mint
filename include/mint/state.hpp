@@ -1,16 +1,23 @@
 #ifndef __STATE_H_
 #define __STATE_H_
 #include <string>
+#include <vector>
 #include "mint/palette.hpp"
+#include "mint/fragment.hpp"
+
+typedef std::vector<Fragment> Fragments;
 
 class State {
 public:
-    std::string text;
     Palette currentPalette;
     std::string render();
 
-    static const std::string greeting;
-    static const std::string step_one;
+    Fragments fragments;
+
+    static const Fragments greeting;
+    static const Fragments step_one;
+
+    static const std::string LINK;
 };
 
 
