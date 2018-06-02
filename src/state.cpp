@@ -13,6 +13,15 @@ std::string State::render() {
     return content;
 };
 
+std::string State::renderStatus() {
+    std::string content;
+    for (auto f : statusFragments) {
+        content += f.render(*this);
+    }
+    // std::cout << content << std::endl;
+    return content;
+};
+
 const std::string State::LINK = "[ <span underline='single' weight='bold'>{{title}}</span> ]";
 
 const Fragments State::greeting = {{ 
@@ -42,3 +51,7 @@ const Fragments State::step_one = {
 const Fragments State::warn_mouse = {{ 
         "<br><br><span color='{{red}}' weight='bold'>Oops!</span> You cannot use mouse. I am so sorry;)<br><br>"
 }};
+
+const Fragments State::normal_mode = {{ "<span>NORMAL</span>" }};
+const Fragments State::hints_mode = {{ "<span color='{{green}}'>HINTS</span>" }};
+const Fragments State::leader_mode = {{ "<span color='{{blue}}'>LEADER</span>" }};

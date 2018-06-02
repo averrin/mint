@@ -8,9 +8,11 @@ struct Palette {
     std::string name;
     ci::Color fgColor;
     ci::Color bgColor;
+    ci::Color bgColorAlt;
 
     std::string green;
     std::string red;
+    std::string blue;
 };
 
 class palettes {

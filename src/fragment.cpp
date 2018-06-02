@@ -16,6 +16,7 @@ std::string Fragment::render(State state) {
 
     tpl.setValue( "green", state.currentPalette.green);
     tpl.setValue( "red", state.currentPalette.red);
+    tpl.setValue( "blue", state.currentPalette.blue);
 
     for (auto [key, value] : args) {
         std::visit([&](auto const & val) { tpl.setValue(key, val); }, value);

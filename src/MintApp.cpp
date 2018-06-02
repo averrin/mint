@@ -12,6 +12,8 @@
 #include "mint/state.hpp"
 #include "mint/modes.hpp"
 
+#include "mint/ui/statusLine.hpp"
+
 using namespace ci;
 using namespace ci::app;
 using namespace std;
@@ -30,8 +32,11 @@ public:
 	void draw() override;
 
 	kp::pango::CinderPangoRef mPango;
+	kp::pango::CinderPangoRef statusFrame;
     std::shared_ptr<Steps> steps;
     ModeManager modeManager = ModeManager();
+    std::shared_ptr<HintsMode> hints;
+    std::shared_ptr<StatusLine> statusLine;
 };
 
 void MintApp::setup() {
@@ -40,8 +45,18 @@ void MintApp::setup() {
 	mPango->setMinSize(100, 100);
 	mPango->setMaxSize(getWindowWidth(), getWindowHeight());
 
+	statusFrame = kp::pango::CinderPango::create();
+	statusFrame->setMinSize(getWindowWidth(), StatusLine::HEIGHT);
+	statusFrame->setMaxSize(getWindowWidth(), StatusLine::HEIGHT);
+
     steps = std::make_shared<Steps>();
     steps->state->currentPalette = palettes::DARK;
+
+    hints = std::make_shared<HintsMode>(steps);
+
+    statusLine = std::make_shared<StatusLine>(steps->state);
+    statusLine->setContent(State::normal_mode);
+
     steps->start();
 }
 
@@ -52,6 +67,15 @@ void MintApp::mouseDown(MouseEvent event) {
 void MintApp::keyDown(KeyEvent event) {
 
     modeManager.processKey(event);
+
+    if (modeManager.modeFlags->isNormal) {
+        statusLine->setContent(State::normal_mode);
+    } else if (modeManager.modeFlags->isHints) {
+        statusLine->setContent(State::hints_mode);
+    } else if (modeManager.modeFlags->isLeader) {
+        statusLine->setContent(State::leader_mode);
+    }
+
     if (!modeManager.modeFlags->isNormal) return;
 
     steps->processKey(event);
@@ -78,9 +102,21 @@ void MintApp::update() {
 
 		// Only renders if it needs to
         mPango->setDefaultTextColor(Color(steps->state->currentPalette.fgColor));
+        mPango->setBackgroundColor(Color(steps->state->currentPalette.bgColor));
         mPango->setDefaultTextFont(DEFAULT_FONT);
 		mPango->render();
 	}
+
+    //TODO: hide into statusBar. Implement padding
+	if (statusFrame != nullptr) {
+
+		statusFrame->setText(steps->state->renderStatus());
+
+        statusFrame->setDefaultTextColor(Color(steps->state->currentPalette.fgColor));
+        statusFrame->setDefaultTextFont(DEFAULT_FONT);
+        statusFrame->setBackgroundColor(Color(steps->state->currentPalette.bgColorAlt));
+		statusFrame->render();
+    }
 }
 
 void MintApp::draw() {
@@ -89,6 +125,9 @@ void MintApp::draw() {
 
 	if (mPango != nullptr) {
 		gl::draw(mPango->getTexture(), vec2(HOffset, VOffset));
+	}
+	if (statusFrame != nullptr) {
+		gl::draw(statusFrame->getTexture(), vec2(0, getWindowHeight()-StatusLine::HEIGHT));
 	}
 }
 

@@ -11,6 +11,7 @@ using namespace ci::app;
 namespace sml = boost::sml;
 
 #include "mint/actions.hpp"
+#include "mint/steps.hpp"
 
 struct Modes {
     bool isNormal = true;
@@ -68,12 +69,28 @@ private:
 
 class Mode {
 public:
-    Mode();
+    Mode(std::shared_ptr<Steps> s);
+    void processKey(KeyEvent e);
+
+protected:
+    std::shared_ptr<Steps> steps;
+};
+
+class HintsMode: public Mode {
+public:
+    HintsMode(std::shared_ptr<Steps> s): Mode(s) {};
     void processKey(KeyEvent e);
 };
 
-class HintsMode: public Mode {};
-class NormalMode: public Mode {};
-class LeaderMode: public Mode {};
+class NormalMode: public Mode {
+public:
+    NormalMode(std::shared_ptr<Steps> s): Mode(s) {};
+    void processKey(KeyEvent e);
+};
+
+class LeaderMode: public Mode {
+    LeaderMode(std::shared_ptr<Steps> s): Mode(s) {};
+    void processKey(KeyEvent e);
+};
 
 #endif // __MODES_H_

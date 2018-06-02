@@ -45,6 +45,7 @@ set( SRC_FILES
 
 	${SRC_DIR}/modes.cpp
 
+	${SRC_DIR}/statusLine.cpp
 	${SRC_DIR}/MintApp.cpp
     ${PANGO_BLOCK_SRC_DIR}/CinderPango.cpp
 )

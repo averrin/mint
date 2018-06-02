@@ -5,7 +5,8 @@ const Palette palettes::DARK = Palette{
     "dark",
     ci::Color(0xcc/255.f, 0xcc/255.f, 0xcc/255.f),
     ci::Color(0x2e/255.f, 0x2e/255.f, 0x2e/255.f),
-    "#81b69d", "#cc6666"
+    ci::Color(0x20/255.f, 0x20/255.f, 0x20/255.f),
+    "#81b69d", "#cc6666", "#81a2be"
     
 };
 
@@ -13,7 +14,8 @@ const Palette palettes::LIGHT = Palette{
     "light",
     ci::Color(0x11/255.f, 0x11/255.f, 0x11/255.f),
     ci::Color(0xcc/255.f, 0xcc/255.f, 0xcc/255.f),
-    "#137a63", "#cc6666"
+    ci::Color(0xbb/255.f, 0xbb/255.f, 0xbb/255.f),
+    "#137a63", "#cc6666", "MidnightBlue"
 };
 
 
@@ -49,14 +51,4 @@ const Palette palettes::LIGHT = Palette{
     @very-light-gray: #c5c8c6; // 05
     @almost-white:    #e0e0e0; // 06
     @white:           #ffffff; // 07
-
-    // Colors
-    @red:             #cc6666; // 08
-    @orange:          #de935f; // 09
-    @yellow:          #f0c674; // 0A
-    @green:           #b5bd68; // 0B
-    @cyan:            #8abeb7; // 0C
-    @blue:            #81a2be; // 0D
-    @purple:          #b294bb; // 0E
-    @brown:           #a3685a; // 0F
  */
