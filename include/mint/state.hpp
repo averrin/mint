@@ -5,8 +5,6 @@
 #include "mint/palette.hpp"
 #include "mint/fragment.hpp"
 
-typedef std::vector<Fragment> Fragments;
-
 class State {
 public:
     Palette currentPalette;
@@ -16,8 +14,11 @@ public:
 
     static const Fragments greeting;
     static const Fragments step_one;
+    static const Fragments warn_mouse;
 
     static const std::string LINK;
+
+    bool mouseWarned = false;
 };
 
 

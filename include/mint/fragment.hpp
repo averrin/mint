@@ -9,6 +9,7 @@
 typedef std::variant<int, float, bool, std::string> tpl_arg;
 
 class State;
+struct MintEvent {};
 class Fragment {
 public:
         Fragment(std::string t, std::map<std::string, tpl_arg> args);
@@ -19,11 +20,12 @@ private:
         std::map<std::string, tpl_arg> args;
 };
 
-typedef std::function<void()> linkCallback;
 class Link : public Fragment {
 public:
-        Link(std::string title, linkCallback cb);
-        linkCallback callback;
+        Link(std::string title, MintEvent cb);
+        MintEvent callback;
 };
+
+typedef std::vector<Fragment> Fragments;
 
 #endif // __FRAGMENT_H_

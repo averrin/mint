@@ -43,6 +43,8 @@ set( SRC_FILES
 	${SRC_DIR}/state.cpp
 	${SRC_DIR}/steps.cpp
 
+	${SRC_DIR}/modes.cpp
+
 	${SRC_DIR}/MintApp.cpp
     ${PANGO_BLOCK_SRC_DIR}/CinderPango.cpp
 )

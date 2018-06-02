@@ -1,6 +1,7 @@
 #include <variant>
 
 #include "mint/fragment.hpp"
+#include "mint/actions.hpp"
 #include "mint/state.hpp"
 #include "Jinja2CppLight.h"
 
@@ -14,6 +15,7 @@ std::string Fragment::render(State state) {
     Template tpl( template_str );
 
     tpl.setValue( "green", state.currentPalette.green);
+    tpl.setValue( "red", state.currentPalette.red);
 
     for (auto [key, value] : args) {
         std::visit([&](auto const & val) { tpl.setValue(key, val); }, value);
@@ -22,7 +24,7 @@ std::string Fragment::render(State state) {
     return tpl.render();
 }
 
-Link::Link(std::string title, linkCallback cb) :
+Link::Link(std::string title, MintEvent cb) :
     Fragment(State::LINK, {{"title", title}}),
     callback(cb)
 {};

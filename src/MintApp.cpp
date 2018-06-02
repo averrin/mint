@@ -10,6 +10,7 @@
 #include "CinderPango.h"
 #include "mint/steps.hpp"
 #include "mint/state.hpp"
+#include "mint/modes.hpp"
 
 using namespace ci;
 using namespace ci::app;
@@ -30,6 +31,7 @@ public:
 
 	kp::pango::CinderPangoRef mPango;
     std::shared_ptr<Steps> steps;
+    ModeManager modeManager = ModeManager();
 };
 
 void MintApp::setup() {
@@ -44,29 +46,23 @@ void MintApp::setup() {
 }
 
 void MintApp::mouseDown(MouseEvent event) {
-	// mPango->setMaxSize(event.getPos());
+    steps->processMouse(event);
 }
 
 void MintApp::keyDown(KeyEvent event) {
 
+    modeManager.processKey(event);
+    if (!modeManager.modeFlags->isNormal) return;
+
     steps->processKey(event);
 
 	switch (event.getCode()) {
-		case KeyEvent::KEY_ESCAPE:
+		case KeyEvent::KEY_q:
             exit(0);
-			break;
-		case KeyEvent::KEY_UP:
-			mPango->setSpacing(mPango->getSpacing() + 1.0);
-			break;
-		case KeyEvent::KEY_DOWN:
-			mPango->setSpacing(mPango->getSpacing() - 1.0);
 			break;
 		case KeyEvent::KEY_t:
             steps->state->currentPalette = steps->state->currentPalette.name == palettes::DARK.name ?
                 palettes::LIGHT : palettes::DARK;
-			break;
-		case KeyEvent::KEY_i:
-			mPango->setDefaultTextItalicsEnabled(!mPango->getDefaultTextItalicsEnabled());
 			break;
 		default:
 			break;

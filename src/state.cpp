@@ -1,7 +1,9 @@
 #include "mint/state.hpp"
+#include "mint/actions.hpp"
 #include "Jinja2CppLight.h"
 
 using namespace Jinja2CppLight;
+using namespace std::string_literals;
 
 std::string State::render() {
     std::string content;
@@ -24,15 +26,19 @@ const Fragments State::greeting = {{
     " <span color='{{green}}' weight='bold'>T</span>erminal."
     " Because who needs terminal which cannot run Emacs?<br>"
     "Mint is bunch of text-based ui experiments. Mint is about text, keyboard and some oldschool habits. <br>" 
-    "Press <b>Enter</b>…<br>"}}
+    "Press <b>Enter</b>…<br>"s}}
 ;
 
 const Fragments State::step_one = {
     Fragment{"<br>Let`s begin!<br>"
-    "What you prefer? "},
-    Link(std::string("Dark theme"), [](){}),
-    {" or "},
-    Link(std::string("Lignt theme"), [](){}),
-    {"?"},
+    "What you prefer? "s},
+    Link("Dark theme"s, ChangePaletteEvent(palettes::DARK)),
+    {" or "s},
+    Link("Light theme"s, ChangePaletteEvent(palettes::LIGHT)),
+    {"?"s},
     };
 
+
+const Fragments State::warn_mouse = {{ 
+        "<br><br><span color='{{red}}' weight='bold'>Oops!</span> You cannot use mouse. I am so sorry;)<br><br>"
+}};

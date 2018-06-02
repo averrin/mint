@@ -10,6 +10,7 @@ struct Palette {
     ci::Color bgColor;
 
     std::string green;
+    std::string red;
 };
 
 class palettes {

@@ -17,9 +17,16 @@ Steps::Steps() {
 };
 
 void Steps::start() {
-    state_machine.process_event(SetContentEvent{State::greeting});
+    state_machine.process_event(SetContentEvent(State::greeting));
 }
 
 void Steps::processKey(KeyEvent event) {
-    state_machine.process_event(KeyPressedEvent{event});
+    state_machine.process_event(KeyPressedEvent(event));
+}
+
+void Steps::processMouse(MouseEvent event) {
+    if (!state->mouseWarned) {
+        state_machine.process_event(AddContentEvent(State::warn_mouse));
+        state->mouseWarned = true;
+    }
 }

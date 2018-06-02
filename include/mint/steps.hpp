@@ -22,6 +22,9 @@ struct events {
         auto set_text = [] (std::shared_ptr<State> state, const SetContentEvent& e) {
             state->fragments = e.content;
         };
+        auto add_text = [] (std::shared_ptr<State> state, const AddContentEvent& e) {
+            state->fragments.insert(state->fragments.end(), e.content.begin(), e.content.end());
+        };
         auto step_one = [] (std::shared_ptr<State> state, const KeyPressedEvent& e) {
             state->fragments.insert(state->fragments.end(), State::step_one.begin(), State::step_one.end());
         };
@@ -29,7 +32,9 @@ struct events {
         // clang-format off
         return make_transition_table(
             *"init"_s + event<SetContentEvent> / set_text  = "started"_s
+            , "started"_s + event<AddContentEvent> / add_text  = "started"_s
             , "started"_s + event<KeyPressedEvent> [is_enter] / step_one  = "step_one"_s
+            , "step_one"_s + event<AddContentEvent> / add_text  = "step_one"_s
         );
         // clang-format on
     }
@@ -41,6 +46,7 @@ public:
     Steps();
 
     void processKey(KeyEvent e);
+    void processMouse(MouseEvent event);
     void start();
 
 private:
