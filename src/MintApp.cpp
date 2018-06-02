@@ -77,8 +77,7 @@ void MintApp::update() {
 	if (mPango != nullptr) {
 
 		mPango->setText(
-            //TODO: templating
-            std::regex_replace(steps->state->text, std::regex("%green%"), steps->state->currentPalette.green)
+            steps->state->render()
         );
 
 		// Only renders if it needs to

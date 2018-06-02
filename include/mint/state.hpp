@@ -7,6 +7,7 @@ class State {
 public:
     std::string text;
     Palette currentPalette;
+    std::string render();
 
     static const std::string greeting;
     static const std::string step_one;

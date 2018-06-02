@@ -12,6 +12,7 @@ get_filename_component( PANGO_BLOCK_SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../incl
 get_filename_component( SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../src" ABSOLUTE )
 get_filename_component( INC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../include" ABSOLUTE )
 get_filename_component( SMLINC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../include/sml/include" ABSOLUTE )
+get_filename_component( JNJ_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../include/Jinja2CppLight/src" ABSOLUTE )
 
 if( NOT TARGET cinder${CINDER_LIB_SUFFIX} )
     find_package( cinder REQUIRED
@@ -32,7 +33,9 @@ set( EXE_NAME ${PROJECT_NAME} )
 
 set( SRC_FILES
     ${BACKWARD_ENABLE}
-
+    ${JNJ_DIR}
+    "${CMAKE_CURRENT_SOURCE_DIR}/../include/Jinja2CppLight/src/stringhelper.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../include/Jinja2CppLight/src/Jinja2CppLight.cpp"
 	${SRC_DIR}/palette.cpp
 	${SRC_DIR}/state.cpp
 	${SRC_DIR}/steps.cpp
@@ -51,6 +54,7 @@ target_include_directories(
 	"${EXE_NAME}"
     PUBLIC ${INC_DIR} 
     PUBLIC ${SMLINC_DIR}
+    PUBLIC ${JNJ_DIR}
            ${PANGO_BLOCK_SRC_DIR}
            ${HARFBUZZ_INCLUDE_DIRS}
            ${CAIRO_INCLUDE_DIRS}
