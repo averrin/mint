@@ -118,9 +118,7 @@ void MintApp::update() {
 
 		statusFrame->setText(steps->state->renderStatus());
 
-        statusFrame->setDefaultTextColor(Color(steps->state->currentPalette.fgColor));
         statusFrame->setDefaultTextFont(DEFAULT_FONT);
-        statusFrame->setBackgroundColor(Color(steps->state->currentPalette.bgColorAlt));
 		statusFrame->render();
     }
 }
@@ -130,10 +128,19 @@ void MintApp::draw() {
 	gl::enableAlphaBlendingPremult();
 
 	if (mPango != nullptr) {
+
+        mPango->setDefaultTextColor(steps->state->currentPalette.fgColor);
+        mPango->setBackgroundColor(ColorA(0,0,0,0));
+        // gl::color(ColorA(0,0,0,0));
 		gl::draw(mPango->getTexture(), vec2(HOffset, VOffset));
 	}
 	if (statusFrame != nullptr) {
-		gl::draw(statusFrame->getTexture(), vec2(0, getWindowHeight()-StatusLine::HEIGHT));
+        gl::color(steps->state->currentPalette.bgColorAlt);
+        gl::drawSolidRect(Rectf(0, getWindowHeight()-StatusLine::HEIGHT, getWindowWidth(), getWindowHeight()));
+        gl::color(ColorA(1,1,1,1));
+        statusFrame->setDefaultTextColor(Color(steps->state->currentPalette.fgColor));
+        statusFrame->setBackgroundColor(ColorA(0,0,0,0));
+		gl::draw(statusFrame->getTexture(), vec2(6, getWindowHeight()-StatusLine::HEIGHT + 6));
 	}
 
     if (modeManager.modeFlags->isHints) {
@@ -148,7 +155,7 @@ void MintApp::draw() {
                 hint->setText("<b>["+key+"]</b>");
                 hint->setDefaultTextColor(steps->state->currentPalette.fgColor);
                 hint->setDefaultTextFont(DEFAULT_FONT);
-                hint->setBackgroundColor(Color(steps->state->currentPalette.bgColor));
+                hint->setBackgroundColor(ColorA(0,0,0,0));
                 hint->render();
 
                 gl::draw(hint->getTexture(), vec2(x, y));

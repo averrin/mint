@@ -28,6 +28,7 @@ public:
     static const Fragments leader_mode;
 
     static const std::string LINK;
+    static const std::string LOADER;
 
     bool mouseWarned = false;
 

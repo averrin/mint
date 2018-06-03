@@ -26,8 +26,9 @@ public:
         PangoRectangle rect;
 
         virtual ~Fragment();
+
+protected:
         std::string template_str;
-private:
         std::map<std::string, tpl_arg> args;
 };
 
@@ -36,6 +37,18 @@ public:
         Link(std::string title, std::shared_ptr<MintEvent> cb);
         std::shared_ptr<MintEvent> callback;
         ~Link();
+};
+
+class Loader : public Fragment {
+public:
+        Loader(std::string);
+        int counter = 0;
+
+        std::string charSet = "⠁⠉⠙⠹⢹⣹⣽⣿⣷⣧⣇⡇⠇⠃";
+        std::string charSetAlt = "⠁⠈⠐⠠⢀⡀⠄⠂";
+
+        void tick();
+        void done(std::string);
 };
 
 typedef std::vector<std::shared_ptr<Fragment>> Fragments;

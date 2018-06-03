@@ -5,7 +5,7 @@ const Palette palettes::DARK = Palette{
     "dark",
     ci::Color(0xcc/255.f, 0xcc/255.f, 0xcc/255.f),
     ci::Color(0x1d/255.f, 0x1f/255.f, 0x22/255.f),
-    ci::Color(0x20/255.f, 0x20/255.f, 0x20/255.f),
+    ci::Color(0x0d/255.f, 0x0f/255.f, 0x12/255.f),
     "#81b69d", "#cc6666", "#81a2be"
     
 };

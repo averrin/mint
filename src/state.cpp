@@ -19,8 +19,6 @@ void State::appendContent(Fragments content) {
 void State::render(kp::pango::CinderPangoRef surface) {
     std::string DEFAULT_FONT = "FiraCode 12";
 
-    surface->setDefaultTextColor(Color(currentPalette.fgColor));
-    surface->setBackgroundColor(Color(currentPalette.bgColor));
     surface->setDefaultTextFont(DEFAULT_FONT);
 
     if (!damaged) {
@@ -58,7 +56,10 @@ std::string State::renderStatus() {
 //TODO: add active state with double underline
 const std::string State::LINK = "[ <span underline='single' weight='bold'>{{title}}</span> ]";
 
+const std::string State::LOADER = "<span weight='bold'>{{char}} {{title}}</span>";
+
 auto F = [](std::string c) { return std::make_shared<Fragment>(c); };
+auto Lo = [](std::string c) { return std::make_shared<Loader>(c); };
 auto L = [](std::string t, std::shared_ptr<MintEvent> cb) { return std::make_shared<Link>(t, cb); };
 
 const Fragments State::greeting = {F( 
@@ -84,6 +85,8 @@ const Fragments State::step_one = {
     F(" or "s),
     L("Light theme"s, std::make_shared<ChangePaletteEvent>(palettes::LIGHT)),
     F("?"s),
+    F("<br>"),
+    Lo("Waiting…")
     };
 
 

@@ -32,9 +32,9 @@ struct events {
 
         // clang-format off
         return make_transition_table(
-            *"init"_s + event<SetContentEvent> / set_text  = "started"_s
-            , "started"_s + event<AddContentEvent> / add_text  = "started"_s
-            , "started"_s + event<KeyPressedEvent> [is_enter] / step_one  = "step_one"_s
+            * "init"_s     + event<SetContentEvent> / set_text  = "started"_s
+            , "started"_s  + event<AddContentEvent> / add_text  = "started"_s
+            , "started"_s  + event<KeyPressedEvent> [is_enter] / step_one  = "step_one"_s
             , "step_one"_s + event<AddContentEvent> / add_text  = "step_one"_s
         );
         // clang-format on
