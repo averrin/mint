@@ -27,7 +27,7 @@ std::string Fragment::render(State state) {
     return tpl.render();
 }
 
-Link::Link(std::string title, MintEvent cb) :
+Link::Link(std::string title, std::shared_ptr<MintEvent> cb) :
     Fragment(State::LINK, {{"title", title}}),
     callback(cb)
 {};

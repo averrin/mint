@@ -66,19 +66,29 @@ void MintApp::mouseDown(MouseEvent event) {
 
 void MintApp::keyDown(KeyEvent event) {
 
+
+    if (modeManager.modeFlags->isHints) {
+        auto handled = hints->processKey(event);
+        if (handled) {
+            if (!hints->activated) {
+                modeManager.toNormal();
+                statusLine->setContent(State::normal_mode);
+            }
+            return;
+        }
+    }
+
     modeManager.processKey(event);
+    steps->processKey(event);
 
     if (modeManager.modeFlags->isNormal) {
         statusLine->setContent(State::normal_mode);
     } else if (modeManager.modeFlags->isHints) {
+        hints->activated = true;
         statusLine->setContent(State::hints_mode);
     } else if (modeManager.modeFlags->isLeader) {
         statusLine->setContent(State::leader_mode);
     }
-
-    if (!modeManager.modeFlags->isNormal) return;
-
-    steps->processKey(event);
 
 	switch (event.getCode()) {
 		case KeyEvent::KEY_q:
@@ -127,11 +137,7 @@ void MintApp::draw() {
 	}
 
     if (modeManager.modeFlags->isHints) {
-        std::vector<std::string> sh = {"f", "j", "d", "k", "s", "l"};
-        auto n = 0;
-            for (auto f : steps->state->fragments) {
-                auto link = dynamic_pointer_cast<Link>(f);
-                if (!link) continue;
+            for (auto [key, f] : hints->getLinks()) {
                 auto x = f->rect.x + f->rect.width + HOffset - 12;
                 auto y = f->rect.y + f->rect.height + VOffset - 6;
 
@@ -139,14 +145,13 @@ void MintApp::draw() {
                 //TODO: use palette color for hints
                 auto hint = kp::pango::CinderPango::create();
                 hint->setMinSize(20, 20);
-                hint->setText("<b>["+sh[n]+"]</b>");
+                hint->setText("<b>["+key+"]</b>");
                 hint->setDefaultTextColor(steps->state->currentPalette.fgColor);
                 hint->setDefaultTextFont(DEFAULT_FONT);
-                hint->setBackgroundColor(Color(steps->state->currentPalette.bgColorAlt));
+                hint->setBackgroundColor(Color(steps->state->currentPalette.bgColor));
                 hint->render();
 
                 gl::draw(hint->getTexture(), vec2(x, y));
-                n++;
             }
         }
 }

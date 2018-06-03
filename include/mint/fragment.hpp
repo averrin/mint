@@ -12,7 +12,9 @@
 typedef std::variant<int, float, bool, std::string> tpl_arg;
 
 class State;
-struct MintEvent {};
+struct MintEvent {
+    virtual ~MintEvent() {};
+};
 class Fragment {
 public:
         Fragment(std::string t, std::map<std::string, tpl_arg> args);
@@ -31,8 +33,8 @@ private:
 
 class Link : public Fragment {
 public:
-        Link(std::string title, MintEvent cb);
-        MintEvent callback;
+        Link(std::string title, std::shared_ptr<MintEvent> cb);
+        std::shared_ptr<MintEvent> callback;
         ~Link();
 };
 

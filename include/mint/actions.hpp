@@ -29,5 +29,8 @@ struct ChangePaletteEvent : MintEvent {
     ChangePaletteEvent(Palette p) : MintEvent(), palette(p) {};
 };
 
+struct ModeExitedEvent : MintEvent {
+    ModeExitedEvent() : MintEvent() {};
+};
 
 #endif // __ACTIONS_H_

@@ -51,6 +51,8 @@ struct modes {
             , "normal"_s + event<KeyPressedEvent> [is_leader] / set_leader  = "leader"_s
             , "hints"_s + event<KeyPressedEvent> [is_esc] / set_normal = "normal"_s
             , "leader"_s + event<KeyPressedEvent> [is_esc] / set_normal  = "normal"_s
+            , "hints"_s + event<ModeExitedEvent> / set_normal = "normal"_s
+            , "leader"_s + event<ModeExitedEvent> / set_normal  = "normal"_s
         );
         // clang-format on
     }
@@ -60,6 +62,8 @@ class ModeManager {
 public:
     ModeManager();
     void processKey(KeyEvent e);
+    void processEvent(std::shared_ptr<MintEvent> e);
+    void toNormal();
     std::shared_ptr<Modes> modeFlags = std::make_shared<Modes>();
 
 private:
@@ -70,7 +74,8 @@ private:
 class Mode {
 public:
     Mode(std::shared_ptr<Steps> s);
-    void processKey(KeyEvent e);
+    bool processKey(KeyEvent e);
+    bool activated = false;
 
 protected:
     std::shared_ptr<Steps> steps;
@@ -79,18 +84,22 @@ protected:
 class HintsMode: public Mode {
 public:
     HintsMode(std::shared_ptr<Steps> s): Mode(s) {};
-    void processKey(KeyEvent e);
+    bool processKey(KeyEvent e);
+    void processEvent(std::shared_ptr<MintEvent> e);
+
+    std::map<std::string, std::shared_ptr<Link>> getLinks();
+    std::map<std::string, std::shared_ptr<Link>> links_cache;
 };
 
 class NormalMode: public Mode {
 public:
     NormalMode(std::shared_ptr<Steps> s): Mode(s) {};
-    void processKey(KeyEvent e);
+    bool processKey(KeyEvent e);
 };
 
 class LeaderMode: public Mode {
     LeaderMode(std::shared_ptr<Steps> s): Mode(s) {};
-    void processKey(KeyEvent e);
+    bool processKey(KeyEvent e);
 };
 
 #endif // __MODES_H_

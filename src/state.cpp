@@ -55,10 +55,11 @@ std::string State::renderStatus() {
     return content;
 };
 
+//TODO: add active state with double underline
 const std::string State::LINK = "[ <span underline='single' weight='bold'>{{title}}</span> ]";
 
 auto F = [](std::string c) { return std::make_shared<Fragment>(c); };
-auto L = [](std::string t, MintEvent cb) { return std::make_shared<Link>(t, cb); };
+auto L = [](std::string t, std::shared_ptr<MintEvent> cb) { return std::make_shared<Link>(t, cb); };
 
 const Fragments State::greeting = {F( 
     "I love <tt>text</tt>. Really.<br>"
@@ -79,9 +80,9 @@ const Fragments State::step_one = {
     F("Let`s begin!"),
     F("<br>"),
     F("What you prefer? "s),
-    L("Dark theme"s, ChangePaletteEvent(palettes::DARK)),
+    L("Dark theme"s, std::make_shared<ChangePaletteEvent>(palettes::DARK)),
     F(" or "s),
-    L("Light theme"s, ChangePaletteEvent(palettes::LIGHT)),
+    L("Light theme"s, std::make_shared<ChangePaletteEvent>(palettes::LIGHT)),
     F("?"s),
     };
 
