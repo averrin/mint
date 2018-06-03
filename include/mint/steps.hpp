@@ -21,13 +21,13 @@ struct events {
         auto is_enter = [](KeyPressedEvent e) {
             return e.key.getCode() == KeyEvent::KEY_RETURN || (e.key.getCode() == KeyEvent::KEY_j && e.key.isControlDown()); };
         auto set_text = [] (std::shared_ptr<State> state, const SetContentEvent& e) {
-            state->fragments = e.content;
+            state->setContent(e.content);
         };
         auto add_text = [] (std::shared_ptr<State> state, const AddContentEvent& e) {
-            state->fragments.insert(state->fragments.end(), e.content.begin(), e.content.end());
+            state->appendContent(e.content);
         };
         auto step_one = [] (std::shared_ptr<State> state, const KeyPressedEvent& e) {
-            state->fragments.insert(state->fragments.end(), State::step_one.begin(), State::step_one.end());
+            state->appendContent(State::step_one);
         };
 
         // clang-format off

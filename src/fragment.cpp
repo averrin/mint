@@ -10,6 +10,8 @@ using namespace Jinja2CppLight;
 Fragment::Fragment(std::string t, std::map<std::string, tpl_arg> a): template_str(t), args(a) {}; 
 Fragment::Fragment(std::string t): template_str(t) {}; 
 
+Fragment::~Fragment(){};
+Link::~Link(){};
 
 std::string Fragment::render(State state) {
     Template tpl( template_str );

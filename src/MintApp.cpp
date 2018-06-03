@@ -84,6 +84,9 @@ void MintApp::keyDown(KeyEvent event) {
 		case KeyEvent::KEY_q:
             exit(0);
 			break;
+		case KeyEvent::KEY_r:
+            // State::greeting[0]->template_str = "!!!";
+			break;
 		case KeyEvent::KEY_t:
             steps->state->currentPalette = steps->state->currentPalette.name == palettes::DARK.name ?
                 palettes::LIGHT : palettes::DARK;
@@ -96,15 +99,8 @@ void MintApp::keyDown(KeyEvent event) {
 void MintApp::update() {
 	if (mPango != nullptr) {
 
-		mPango->setText(
-            steps->state->render()
-        );
+        steps->state->render(mPango);
 
-		// Only renders if it needs to
-        mPango->setDefaultTextColor(Color(steps->state->currentPalette.fgColor));
-        mPango->setBackgroundColor(Color(steps->state->currentPalette.bgColor));
-        mPango->setDefaultTextFont(DEFAULT_FONT);
-		mPango->render();
 	}
 
     //TODO: hide into statusBar. Implement padding
@@ -120,7 +116,7 @@ void MintApp::update() {
 }
 
 void MintApp::draw() {
-	gl::clear(Color(steps->state->currentPalette.bgColor));
+	gl::clear(steps->state->currentPalette.bgColor);
 	gl::enableAlphaBlendingPremult();
 
 	if (mPango != nullptr) {
@@ -129,6 +125,30 @@ void MintApp::draw() {
 	if (statusFrame != nullptr) {
 		gl::draw(statusFrame->getTexture(), vec2(0, getWindowHeight()-StatusLine::HEIGHT));
 	}
+
+    if (modeManager.modeFlags->isHints) {
+        std::vector<std::string> sh = {"f", "j", "d", "k", "s", "l"};
+        auto n = 0;
+            for (auto f : steps->state->fragments) {
+                auto link = dynamic_pointer_cast<Link>(f);
+                if (!link) continue;
+                auto x = f->rect.x + f->rect.width + HOffset - 12;
+                auto y = f->rect.y + f->rect.height + VOffset - 6;
+
+                //TODO: cache hints surfaces 
+                //TODO: use palette color for hints
+                auto hint = kp::pango::CinderPango::create();
+                hint->setMinSize(20, 20);
+                hint->setText("<b>["+sh[n]+"]</b>");
+                hint->setDefaultTextColor(steps->state->currentPalette.fgColor);
+                hint->setDefaultTextFont(DEFAULT_FONT);
+                hint->setBackgroundColor(Color(steps->state->currentPalette.bgColorAlt));
+                hint->render();
+
+                gl::draw(hint->getTexture(), vec2(x, y));
+                n++;
+            }
+        }
 }
 
 CINDER_APP(MintApp, RendererGl)

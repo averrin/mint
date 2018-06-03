@@ -5,18 +5,51 @@
 using namespace Jinja2CppLight;
 using namespace std::string_literals;
 
-std::string State::render() {
-    std::string content;
-    for (auto f : fragments) {
-        content += f.render(*this);
+
+void State::setContent(Fragments content) {
+    fragments = content;
+    damaged = true;
+};
+
+void State::appendContent(Fragments content) {
+    fragments.insert(fragments.end(), content.begin(), content.end());
+    damaged = true;
+};
+
+void State::render(kp::pango::CinderPangoRef surface) {
+    std::string DEFAULT_FONT = "FiraCode 12";
+
+    surface->setDefaultTextColor(Color(currentPalette.fgColor));
+    surface->setBackgroundColor(Color(currentPalette.bgColor));
+    surface->setDefaultTextFont(DEFAULT_FONT);
+
+    if (!damaged) {
+        surface->setText(cache);
+        surface->render();
+        return;
     }
-    return content;
+
+    std::string content;
+    auto n = 0;
+    for (auto f : fragments) {
+        content += f->render(*this);
+        surface->setText(content);
+        surface->render();
+        f->index = n;
+        auto c = surface->getCount();
+        f->length = c - n + 1;
+        f->rect = surface->getRect(f->index, f->length);
+        n = c + 2;
+    }
+    cache = content;
+
+    damaged = false;
 };
 
 std::string State::renderStatus() {
     std::string content;
     for (auto f : statusFragments) {
-        content += f.render(*this);
+        content += f->render(*this);
     }
     // std::cout << content << std::endl;
     return content;
@@ -24,7 +57,10 @@ std::string State::renderStatus() {
 
 const std::string State::LINK = "[ <span underline='single' weight='bold'>{{title}}</span> ]";
 
-const Fragments State::greeting = {{ 
+auto F = [](std::string c) { return std::make_shared<Fragment>(c); };
+auto L = [](std::string t, MintEvent cb) { return std::make_shared<Link>(t, cb); };
+
+const Fragments State::greeting = {F( 
     "I love <tt>text</tt>. Really.<br>"
     "But most of modern software tends to decrease text importance. "
     "They use a lot of colorful images and 'sexy' ui controls. Bleh.<br>"
@@ -35,23 +71,25 @@ const Fragments State::greeting = {{
     " <span color='{{green}}' weight='bold'>T</span>erminal."
     " Because who needs terminal which cannot run Emacs?<br>"
     "Mint is bunch of text-based ui experiments. Mint is about text, keyboard and some oldschool habits. <br>" 
-    "Press <b>Enter</b> (or <b>Ctrl+J</b>, of course)…<br>"s}}
+    "Press <b>Enter</b> (or <b>Ctrl+J</b>, of course)…"s), F("<br>")}
 ;
 
 const Fragments State::step_one = {
-    Fragment{"<br>Let`s begin!<br>"
-    "What you prefer? "s},
-    Link("Dark theme"s, ChangePaletteEvent(palettes::DARK)),
-    {" or "s},
-    Link("Light theme"s, ChangePaletteEvent(palettes::LIGHT)),
-    {"?"s},
+    F("<br>"),
+    F("Let`s begin!"),
+    F("<br>"),
+    F("What you prefer? "s),
+    L("Dark theme"s, ChangePaletteEvent(palettes::DARK)),
+    F(" or "s),
+    L("Light theme"s, ChangePaletteEvent(palettes::LIGHT)),
+    F("?"s),
     };
 
 
-const Fragments State::warn_mouse = {{ 
-        "<br><br><span color='{{red}}' weight='bold'>Oops!</span> You cannot use mouse. I am so sorry;)<br><br>"
-}};
+const Fragments State::warn_mouse = {
+        F("<br><br><span color='{{red}}' weight='bold'>Oops!</span> You cannot use mouse. I am so sorry;)<br><br>")
+};
 
-const Fragments State::normal_mode = {{ "<span>NORMAL</span>" }};
-const Fragments State::hints_mode = {{ "<span color='{{green}}'>HINTS</span>" }};
-const Fragments State::leader_mode = {{ "<span color='{{blue}}'>LEADER</span>" }};
+const Fragments State::normal_mode = {F("<span>NORMAL</span>" )};
+const Fragments State::hints_mode =  {F("<span color='{{green}}'>HINTS</span>" )};
+const Fragments State::leader_mode = {F("<span color='{{blue}}'>LEADER</span>" )};

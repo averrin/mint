@@ -4,12 +4,16 @@
 #include <vector>
 #include "mint/palette.hpp"
 #include "mint/fragment.hpp"
+#include "CinderPango.h"
 
 class State {
 public:
     Palette currentPalette;
-    std::string render();
+    void render(kp::pango::CinderPangoRef);
     std::string renderStatus();
+
+    void setContent(Fragments);
+    void appendContent(Fragments);
 
     Fragments fragments;
     Fragments statusFragments;
@@ -26,6 +30,10 @@ public:
     static const std::string LINK;
 
     bool mouseWarned = false;
+
+private:
+    bool damaged = true;
+    std::string cache;
 };
 
 
